@@ -4,21 +4,31 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.blundell.roboguicefruitshop.R;
+import com.blundell.roboguicefruitshop.domain.*;
+import com.google.inject.Inject;
 
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 
 public class MainActivity extends RoboActivity {
 
-    @InjectView(R.id.main_tv_hello_world)
-    TextView helloWorldTextView;
+	@InjectView(R.id.main_tv_fruit_count)
+	TextView numberOfFruitTextView;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+	@Inject
+	FruitShop fruitShop;
 
-        helloWorldTextView.setText("RoboGuice HelloWorld");
-    }
+	@Inject
+	Auditor auditor;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+
+		fruitShop.add(Fruit.ORANGE, 3);
+
+		numberOfFruitTextView.setText("Fruit Shop Count: " + auditor.count(fruitShop));
+	}
 
 }
